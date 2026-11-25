@@ -693,7 +693,10 @@ async fn set_and_delete_repo_token_reprobe_the_platform() {
     assert!(!service.platform_cache.lock_recover().contains_key(&host));
     let epoch = service.credential_epoch.load(Ordering::SeqCst);
     service.cache_repo_skills(cached("other.example.com"), Instant::now(), epoch, &[]);
-    assert!(service.discovery_cache.lock_recover().contains_key(&cached("other.example.com")));
+    assert!(service
+        .discovery_cache
+        .lock_recover()
+        .contains_key(&cached("other.example.com")));
     service.remember_platform(&host, RepoPlatform::Gitea, epoch);
     assert_eq!(
         service.platform_cache.lock_recover().get(&host).copied(),
